@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id='canvas' height="400px" width="400px" viewbox="400px 400px"></canvas>
+
+    <script>
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        cor = ["Red", "Orange", "Yellow", "Lightgreen","Green", "blue", "Purple"];
+        var n = 0;
+        var cont = 1;
+
+        for (var i=0; i<50; i++) {
+            ctx.fillStyle = cor[n];
+           ctx.fillRect( i * 10, i * 10, 10, 10);
+           if (Math.trunc(cont/7)%2 == 0) { 
+                n++ ;
+                 }
+            else { 
+                n-- ;
+                 }
+                cont++;
+                }
+            
+    </script>
+</body>
+</html>
