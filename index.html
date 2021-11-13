@@ -4,30 +4,195 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' type='text/css' href='style.css'>
     <title>Document</title>
 </head>
 <body>
-    <canvas id='canvas' height="400px" width="400px" viewbox="400px 400px"></canvas>
+    <h1>Visualização Gráfica do Algoritmo <br> GREATER DISTANCE</h1>
+	<div class="bottonRaio">
+        <p>RAIO DAS CIRCUNFERÊNCIAS</p>
+    <input type="range" min="2" max="100" value="50" class="slider" id="botton1">
+	</div>
+    <canvas id='canvas' width="400px" height="400px"  viewbox="400px 400px"></canvas>
+    <p>Eu queria poder criar algum algoritmo para interpretar, mesmo que simples. A princípio, a ideia era colocar várias bolas em pares 
+         para se moverem simultaneamente na tela. O passo seguinte seria calcular quais destes pares possuem maior distância entre si e
+          mostrar uma coloração diferente das outras. A maior parte das ideias se mantiveram, mas encontrei algumas dificuldades </p>
 
-    <script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script> 
+
+    //##################################################### DEFINIÇÃO DE PARÂMETROS INICIAIS#####################################
         var canvas = document.getElementById("canvas");
+        var cnv = document.querySelector("canvas");
+        cnv.width = 600;
+        cnv.height = 500;
         var ctx = canvas.getContext("2d");
-        cor = ["Red", "Orange", "Yellow", "Lightgreen","Green", "blue", "Purple"];
-        var n = 0;
-        var cont = 1;
+        var UP = 38, DOWN = 40, RIGHT = 39, LEFT = 37;
+        var moveesquerda = false, movedireita = false, movecima = false, movebaixo = false;
+        var cor = ['#09F00070', '#0E01F570', '#CC00DB70', '#F5D60170','#EB130070'];
+		var cor_neon = ['#09F000', '#0E01F5', '#CC00DB', '#F5D601','#EB1300'];
+        var dx = 0
+        var dy = 0
+		var tamanho = document.getElementById("botton1").value;
+        var velocidade = 0.5; 
+		var quantidade_bolha  = 10;
+		
+        //Variável p1 define o círculo movimentado por teclas
+        var p2 = {
+                    x: 0,
+                    y: 0
+                };
+        
+        var coord_bolhas = [];
+        var direcoes = [];
+        var cores = 0;
 
-        for (var i=0; i<50; i++) {
-            ctx.fillStyle = cor[n];
-           ctx.fillRect( i * 10, i * 10, 10, 10);
-           if (Math.trunc(cont/7)%2 == 0) { 
-                n++ ;
-                 }
-            else { 
-                n-- ;
-                 }
-                cont++;
-                }
-            
+        //Sorteia a velocidade com que as bolhas vão correr
+        function sorteia_direcoes(){
+            for (i=0; i<quantidade_bolha; i++) {
+           dx = (Math.random()-0.5) * velocidade;
+           dy= (Math.random()-0.5) * velocidade; 
+           var ds = [dx, dy];
+           direcoes.push(ds);
+        }
+        }
+
+        //Sorteia as posições iniciais das bolhas
+        function bolhas(){
+        for (i=0; i<quantidade_bolha; i++) {
+           p2.x = Math.random()*cnv.width;
+           p2.y= Math.random()*cnv.height; 
+           //concertap2();
+           var coord = [p2.x, p2.y];
+           coord_bolhas.push(coord);
+        }
+        }
+
+        //Se a posição inadequada do círculo surgir, será recalculada
+        function concertap2 (){
+        while (p2.x <= tamanho || p2.x >= (cnv.width - tamanho) ){ 
+        {p2.x = Math.random()*cnv.width};
+        while( p2.y <= tamanho || p2.y >= (cnv.height - tamanho)){
+        {p2.y = Math.random()*cnv.height};
+        }
+        }
+        }
+    
+    //##################################################### FUNÇÕES RESPONSÁVEIS PELOS DESENHOS#####################################
+
+        //Desenha um círculo com as formatações da função e desenha as linhas
+        draw = function (t) {
+         var k=0;
+        for (var i=0; i<quantidade_bolha; i++) {
+          ctx.fillStyle = cor[k];   
+        circle(coord_bolhas[i][0],coord_bolhas[i][1], t, true);
+        n_sai_da_tela();
+        if (i % 2 == 1){
+        k++;
+        if (k>cor.length){
+            k = 0
+        }   
+        }
+        }
+
+        var linecolor = [];
+
+        for (var i=0; i<quantidade_bolha; i++) {
+        if (i % 2 == 1){
+        var tamanho_linha = Math.pow(coord_bolhas[i][0] - coord_bolhas[i-1][0], 2) + Math.pow(coord_bolhas[i][1] - coord_bolhas[i-1][1], 2 );
+        linecolor.push(tamanho_linha);
+        }
+        }
+
+        for (var i=0; i<quantidade_bolha; i++) {
+        if (i % 2 == 1){
+        var tamanho_linha = Math.pow(coord_bolhas[i][0] - coord_bolhas[i-1][0], 2) + Math.pow(coord_bolhas[i][1] - coord_bolhas[i-1][1], 2 );
+        var  a = Math.max.apply(null, linecolor);
+        if( tamanho_linha == a){
+        ctx.strokeStyle = 'Red';
+        ctx.lineWidth = 3;
+        line(coord_bolhas[i-1][0], coord_bolhas[i-1][1],coord_bolhas[i][0], coord_bolhas[i][1]);  
+        }
+        else {                    
+        ctx.strokeStyle = '#09F00075';
+        ctx.lineWidth = 3;
+        line(coord_bolhas[i-1][0], coord_bolhas[i-1][1],coord_bolhas[i][0], coord_bolhas[i][1]);
+        }            
+        }
+        }
+        }
+
+        // Define um círculo
+        circle = function (x, y, t, fillCircle) {
+        ctx.beginPath();
+        ctx.arc(x, y, t, 0, Math.PI * 2, false);
+        if (fillCircle) {
+        ctx.fill();
+        } else {
+        ctx.stroke();
+        }
+        };
+
+        //Define uma linha entre dois pontos de mesma cor
+        var line = function (x, y, x2, y2) {
+         ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+        };
+
+        //##################################################### FUNÇÕES DE CHOQUES ENTRE AS BOLHAS#####################################
+        //Não deixa as bolhas sairem da tela 
+        function n_sai_da_tela(){
+        for (i=0; i<quantidade_bolha; i++) {
+        if (coord_bolhas[i][0] + tamanho > cnv.width || coord_bolhas[i][0] - tamanho < 0 ){
+        direcoes[i][0] = - (direcoes[i][0]);
+        }
+        if (coord_bolhas[i][1] + tamanho > cnv.height || coord_bolhas[i][1] - tamanho < 0 ){
+        direcoes[i][1] =- (direcoes[i][1]);
+        }
+        coord_bolhas[i][0] += direcoes[i][0];
+        coord_bolhas[i][1] += direcoes[i][1];
+        }
+        }
+
+
+//##################################################### DEFINIÇÃO DA ORDEM DE ACONTECIMENTO DAS COISAS, O QUE VAI SURGIR NA TELA#####################################
+       
+        //Código rodado para aparecer na tela
+        bolhas();
+        sorteia_direcoes();
+        update();
+        
+        //A parte mais importante, basicmente isso que está rodando por chamar todas as outras funções 
+        function update(){
+        requestAnimationFrame(update, cnv);
+        tela();
+        }
+
+        //Define o que vai aparecer na tela
+        function tela(){
+        ctx.clearRect(0,0,cnv.width,cnv.height);
+        tamanho = document.getElementById("botton1").value;
+        draw(tamanho)        
+        }    
+
+
+
+
     </script>
 </body>
 </html>

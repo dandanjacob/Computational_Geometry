@@ -1,0 +1,13 @@
+    body{
+        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab,#bce44f,#bf9948);
+        display:block;
+        align-items: center;
+        justify-content:center;
+        text-align: center;
+        margin: 10%;
+      
+    }
+
+    .bottonradio{
+        background: blue;
+    }
