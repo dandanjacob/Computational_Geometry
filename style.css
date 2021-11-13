@@ -17,7 +17,7 @@
     h1{
         text-size-adjust: 15px;
     }
-    p{
+    p, dl, dt, dd{
         font-family: 'Roboto Slab', serif;
         text-align: center;
     }
