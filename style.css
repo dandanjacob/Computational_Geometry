@@ -1,13 +1,49 @@
     body{
-        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab,#bce44f,#bf9948);
+        
+       /*background: linear-gradient(0deg, #E865EB50, #CC69F550, #9C6ADE50, #8069F550, #6B82EB50);*/
+
+       background: rgb(24, 24, 24);
+        background-size: 100% 100%;
         display:block;
         align-items: center;
         justify-content:center;
         text-align: center;
-        margin: 10%;
+        margin-left: 10%;
+        margin-right: 10%;
+        margin-top: 0%;
+        color:rgb(197, 192, 192);
       
+    }
+    h1{
+        text-size-adjust: 15px;
+    }
+    p{
+        font-family: 'Roboto Slab', serif;
+        text-align: center;
+    }
+    .titulo1{
+        font-family: 'Dancing Script', cursive;
+    }
+    .titulo2{
+        font-family: 'Roboto Slab', serif;
+        font-size: larger;
+    }
+
+    #capslock{
+        font-family: 'Roboto Slab', serif;
     }
 
     .bottonradio{
-        background: blue;
+        font-size: xx-small;   
     }
+    #canvas{
+       background: none;
+       width: 75%;
+       height: 75%;
+
+    }
+    .footer{
+        text-align: right;
+        margin-bottom: 0px;
+        padding: 0px;
+      }  
